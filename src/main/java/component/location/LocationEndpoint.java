@@ -1,6 +1,6 @@
-package component;
+package component.location;
 
-import main.BurgerRoute;
+import component.restaurant.BurgerComponent;
 import org.apache.camel.Category;
 import org.apache.camel.Consumer;
 import org.apache.camel.Processor;
@@ -17,32 +17,34 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * Burger component which does bla bla.
- *
+ * <p>
  * TODO: Update one line description above what the component does, and update Category.
  */
-@UriEndpoint(firstVersion = "1.0-SNAPSHOT", scheme = "burger", title = "Burger", syntax="burger:name",
-             category = {Category.DATABASE})
-public class BurgerEndpoint extends DefaultEndpoint {
-    @UriPath @Metadata(required = true)
+@UriEndpoint(firstVersion = "1.0-SNAPSHOT", scheme = "location", title = "Location", syntax = "location:name",
+        category = {Category.DATABASE})
+public class LocationEndpoint extends DefaultEndpoint {
+    @UriPath
+    @Metadata(required = true)
     private String name;
     @UriParam(defaultValue = "10")
     private int option = 10;
 
-    private final Logger LOGGER = LoggerFactory.getLogger(BurgerEndpoint.class);
-    public BurgerEndpoint() {
+    private final Logger LOGGER = LoggerFactory.getLogger(LocationEndpoint.class);
+
+    public LocationEndpoint() {
     }
 
-    public BurgerEndpoint(String uri, BurgerComponent component) {
+    public LocationEndpoint(String uri, LocationComponent component) {
         super(uri, component);
-        LOGGER.info("BurgerEndpoint created");
+        LOGGER.info("LocationEndpoint created");
     }
 
     public Producer createProducer() throws Exception {
-        return new BurgerProducer(this);
+        return new LocationProducer(this);
     }
 
     public Consumer createConsumer(Processor processor) throws Exception {
-        Consumer consumer = new BurgerConsumer(this, processor);
+        Consumer consumer = new LocationConsumer(this, processor);
         configureConsumer(consumer);
         return consumer;
     }
@@ -71,6 +73,6 @@ public class BurgerEndpoint extends DefaultEndpoint {
 
     public ExecutorService createExecutor() {
         // TODO: Delete me when you implemented your custom component
-        return getCamelContext().getExecutorServiceManager().newSingleThreadExecutor(this, "BurgerConsumer");
+        return getCamelContext().getExecutorServiceManager().newSingleThreadExecutor(this, "LocationConsumer");
     }
 }

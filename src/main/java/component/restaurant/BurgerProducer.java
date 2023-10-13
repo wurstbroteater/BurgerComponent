@@ -1,4 +1,4 @@
-package component;
+package component.restaurant;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.support.DefaultProducer;
@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class BurgerProducer extends DefaultProducer {
-    private static final Logger LOG = LoggerFactory.getLogger(BurgerProducer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BurgerProducer.class);
     private BurgerEndpoint endpoint;
 
     public BurgerProducer(BurgerEndpoint endpoint) {
@@ -15,7 +15,7 @@ public class BurgerProducer extends DefaultProducer {
     }
 
     public void process(Exchange exchange) throws Exception {
-        System.out.println("PRODUCER " + exchange.getIn().getBody());
+        LOGGER.error("BURGER Received message but should only produce messages: " + exchange.getIn().getBody());
     }
 
 }

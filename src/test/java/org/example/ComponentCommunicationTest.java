@@ -3,14 +3,13 @@ package org.example;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.junit5.CamelTestSupport;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class BurgerComponentTest extends CamelTestSupport {
+public class ComponentCommunicationTest extends CamelTestSupport {
 
     private final EventBusHelper eventBusHelper = EventBusHelper.getInstance();
 
@@ -29,8 +28,23 @@ public class BurgerComponentTest extends CamelTestSupport {
     protected RouteBuilder createRouteBuilder() throws Exception {
         return new RouteBuilder() {
             public void configure() {
-                from("burger:burgerme")
-                        .to("burger://bar")
+                //from restaurant to location
+                from("burger://restaurant:burgerme")
+                        /*
+                        .process(new Processor() {
+                            private final Logger INNER_LOGGER = LoggerFactory.getLogger(Processor.class);
+                            @Override
+                            public void process(Exchange exchange) throws Exception {
+                                INNER_LOGGER.info("I process the Burgers");
+                                String message = exchange.getIn().getBody(String.class);
+                                message += " with processed meat";
+
+                                exchange.getOut().setBody(message);
+                            }
+                        })
+                        */
+                       .to("location:home")
+                        //.to("log:out")
                         .to("mock:result");
             }
         };

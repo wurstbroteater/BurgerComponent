@@ -2,7 +2,6 @@ package component;
 
 import org.apache.camel.Endpoint;
 import org.apache.camel.support.DefaultComponent;
-import org.example.trueEndpoint;
 
 import java.util.Map;
 

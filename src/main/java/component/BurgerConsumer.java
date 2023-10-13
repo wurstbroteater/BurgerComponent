@@ -4,7 +4,6 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.support.DefaultConsumer;
 import org.example.EventBusHelper;
-import org.example.trueEndpoint;
 
 import java.util.concurrent.ExecutorService;
 

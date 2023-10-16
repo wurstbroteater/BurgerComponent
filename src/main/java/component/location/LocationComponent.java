@@ -14,7 +14,7 @@ public class LocationComponent extends DefaultComponent {
     @Override
     protected Endpoint createEndpoint(String uri, String remaining, Map<String, Object> parameters) throws Exception {
         //LOGGER.info("uri " + uri + " remaining " + remaining);
-        Endpoint endpoint = endpoint = new LocationEndpoint(uri, this);
+        final Endpoint endpoint = new LocationEndpoint(uri, this);
 
         setProperties(endpoint, parameters);
         return endpoint;

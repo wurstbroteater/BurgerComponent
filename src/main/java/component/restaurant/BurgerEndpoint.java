@@ -25,8 +25,8 @@ public class BurgerEndpoint extends DefaultEndpoint {
     @UriPath
     @Metadata(required = true)
     private String name;
-    @UriParam(defaultValue = "10")
-    private int option = 10;
+    @UriParam(defaultValue = "42")
+    private int order;
 
     private final Logger LOGGER = LoggerFactory.getLogger(BurgerEndpoint.class);
 
@@ -62,12 +62,12 @@ public class BurgerEndpoint extends DefaultEndpoint {
     /**
      * Some description of this option, and what it does
      */
-    public void setOption(int option) {
-        this.option = option;
+    public void setOrder(int order) {
+        this.order = order;
     }
 
-    public int getOption() {
-        return option;
+    public int getOrder() {
+        return order;
     }
 
     public ExecutorService createExecutor() {

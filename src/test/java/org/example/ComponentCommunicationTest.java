@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static org.apache.camel.builder.component.ComponentsBuilderFactory.ftp;
+
 public class ComponentCommunicationTest extends CamelTestSupport {
 
     private final EventBusHelper eventBusHelper = EventBusHelper.getInstance();
@@ -29,7 +31,7 @@ public class ComponentCommunicationTest extends CamelTestSupport {
         return new RouteBuilder() {
             public void configure() {
                 //from restaurant to location
-                from("burger://restaurant:burgerme")
+                from("burger://restaurant:burgerme?order=4")
                         /*
                         .process(new Processor() {
                             private final Logger INNER_LOGGER = LoggerFactory.getLogger(Processor.class);

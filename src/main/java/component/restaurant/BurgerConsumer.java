@@ -49,7 +49,7 @@ public class BurgerConsumer extends DefaultConsumer {
     private void onEventListener(final Object event) {
         final Exchange exchange = createExchange(false);
         LOGGER.info("BURGER creating message");
-        exchange.getIn().setBody("Created " + (++counter) + " Burger " + event);
+        exchange.getIn().setBody("Created " + (++counter) + " Burger! Parameter order: " + endpoint.getOrder() + " event: " + event);
 
         try {
             // send message to next processor in the route

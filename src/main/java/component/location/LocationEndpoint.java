@@ -1,6 +1,5 @@
 package component.location;
 
-import component.restaurant.BurgerComponent;
 import org.apache.camel.Category;
 import org.apache.camel.Consumer;
 import org.apache.camel.Processor;

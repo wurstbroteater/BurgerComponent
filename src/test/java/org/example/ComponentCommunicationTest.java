@@ -9,8 +9,6 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static org.apache.camel.builder.component.ComponentsBuilderFactory.ftp;
-
 public class ComponentCommunicationTest extends CamelTestSupport {
 
     private final EventBusHelper eventBusHelper = EventBusHelper.getInstance();
@@ -45,7 +43,7 @@ public class ComponentCommunicationTest extends CamelTestSupport {
                             }
                         })
                         */
-                       .to("location:home")
+                        .to("location:home")
                         //.to("log:out")
                         .to("mock:result");
             }

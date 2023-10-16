@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutorService;
  * TODO: Update one line description above what the component does, and update Category.
  */
 @UriEndpoint(firstVersion = "1.0-SNAPSHOT", scheme = "burger", title = "Burger", syntax = "burger:restaurant:name",
-        category = {Category.DATABASE})
+        consumerOnly = true, category = {Category.DATABASE})
 public class BurgerEndpoint extends DefaultEndpoint {
     @UriPath
     @Metadata(required = true)
@@ -38,10 +38,12 @@ public class BurgerEndpoint extends DefaultEndpoint {
         LOGGER.info("BurgerEndpoint created");
     }
 
+    @Override
     public Producer createProducer() throws Exception {
-        return new BurgerProducer(this);
+        return null;
     }
 
+    @Override
     public Consumer createConsumer(Processor processor) throws Exception {
         Consumer consumer = new BurgerConsumer(this, processor);
         configureConsumer(consumer);

@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
  * TODO: Update one line description above what the component does, and update Category.
  */
 @UriEndpoint(firstVersion = "1.0-SNAPSHOT", scheme = "location", title = "Location", syntax = "location:name",
-        category = {Category.DATABASE})
+        producerOnly = true, category = {Category.DATABASE})
 public class LocationEndpoint extends DefaultEndpoint {
     @UriPath
     @Metadata(required = true)
@@ -39,14 +39,14 @@ public class LocationEndpoint extends DefaultEndpoint {
         LOGGER.info("LocationEndpoint created");
     }
 
+    @Override
     public Producer createProducer() throws Exception {
         return new LocationProducer(this);
     }
 
+    @Override
     public Consumer createConsumer(Processor processor) throws Exception {
-        Consumer consumer = new LocationConsumer(this, processor);
-        configureConsumer(consumer);
-        return consumer;
+        return null;
     }
 
     /**

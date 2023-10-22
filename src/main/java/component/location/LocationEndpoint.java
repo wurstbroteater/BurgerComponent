@@ -22,10 +22,10 @@ import java.util.concurrent.ExecutorService;
 @UriEndpoint(firstVersion = "1.0-SNAPSHOT", scheme = "location", title = "Location", syntax = "location:name",
         producerOnly = true, category = {Category.DATABASE})
 public class LocationEndpoint extends DefaultEndpoint {
-    @UriPath
+    @UriPath(label = "common")
     @Metadata(required = true)
     private String name;
-    @UriParam(defaultValue = "10")
+    @UriParam(label = "common", defaultValue = "10")
     private int option = 10;
 
     private final Logger LOGGER = LoggerFactory.getLogger(LocationEndpoint.class);

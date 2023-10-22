@@ -1,5 +1,9 @@
 package component.restaurant;
 
+import burger.Burger;
+import burger.Ingredients;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.support.DefaultConsumer;
@@ -7,7 +11,11 @@ import org.example.EventBusHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
+
+import static burger.Ingredients.*;
 
 public class BurgerConsumer extends DefaultConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(BurgerConsumer.class);
@@ -18,10 +26,17 @@ public class BurgerConsumer extends DefaultConsumer {
     private ExecutorService executorService;
     private int counter = 0;
 
+    private final Cook cook;
+
     public BurgerConsumer(BurgerEndpoint endpoint, Processor processor) {
         super(endpoint, processor);
         this.endpoint = endpoint;
         eventBusHelper = EventBusHelper.getInstance();
+
+        final Map<List<Ingredients>, String> knowledge = Map.of(
+                List.of(BEEF, CHEESE, BEEF, CHEESE, ONION, LETTUCE, TOMATO, KETCHUP, MUSTARD), "cheeseburger"
+        );
+        this.cook = new Cook("Pedro", knowledge);
     }
 
     @Override
@@ -46,11 +61,17 @@ public class BurgerConsumer extends DefaultConsumer {
         getEndpoint().getCamelContext().getExecutorServiceManager().shutdownGraceful(executorService);
     }
 
-    private void onEventListener(final Object event) {
+    private void onEventListener(final List<Ingredients> event) {
         final Exchange exchange = createExchange(false);
+        LOGGER.info("");
         LOGGER.info("BURGER creating message");
-        exchange.getIn().setBody("Created " + (++counter) + " Burger! Parameter order: " + endpoint.getOrder() + " event: " + event);
+        /*
+        LOGGER.info("Restaurant " + endpoint.getName() + "\nCreated " + (++counter) + " Burger!\n" +
+                "Parameter amount: " + endpoint.getAmount() +
+                "\nEvent: " + event);
 
+         */
+        exchange.getIn().setBody(cook.makeFood(event));
         try {
             // send message to next processor in the route
             getProcessor().process(exchange);
@@ -63,4 +84,6 @@ public class BurgerConsumer extends DefaultConsumer {
             releaseExchange(exchange, false);
         }
     }
+
+
 }

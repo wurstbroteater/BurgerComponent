@@ -1,5 +1,6 @@
 package component.location;
 
+import burger.Burger;
 import org.apache.camel.Exchange;
 import org.apache.camel.support.DefaultProducer;
 import org.slf4j.Logger;
@@ -15,7 +16,8 @@ public class LocationProducer extends DefaultProducer {
     }
 
     public void process(Exchange exchange) throws Exception {
-        LOGGER.info("LOCATION Received message  " + exchange.getIn().getBody());
+        final Burger receivedFood = (Burger) exchange.getIn().getBody();
+        LOGGER.info("LOCATION Received message  " + receivedFood);
     }
 
 }

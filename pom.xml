@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>eric.hungry</groupId>
-    <artifactId>CustomComponents</artifactId>
+    <artifactId>Wublerando</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
 
@@ -15,6 +15,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <camel.version>4.1.0</camel.version>
+        <current.java.version>20</current.java.version>
     </properties>
 
     <dependencyManagement>
@@ -37,6 +38,15 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-support</artifactId>
         </dependency>
+
+        <!-- GSON -->
+        <!--
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+        -->
 
         <!-- Camel DSLs -->
         <dependency>
@@ -84,6 +94,15 @@
                 <configuration>
                     <release>17</release>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>recompile</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <phase>process-classes</phase>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -95,11 +114,33 @@
                 </configuration>
             </plugin>
 
+
+            <plugin>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-package-maven-plugin</artifactId>
+                <version>${camel.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate-component-dsl</goal>
+                            <goal>generate-endpoint-dsl</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
             <!-- generate camel meta-data -->
             <plugin>
                 <groupId>org.apache.camel</groupId>
                 <artifactId>camel-component-maven-plugin</artifactId>
                 <version>4.1.0</version>
+                <!--
+                <configuration>
+                    <sourcesOutputDir>src/main/java</sourcesOutputDir>
+                    <resourcesOutputDir>src/main/resources</resourcesOutputDir>
+                </configuration>
+                -->
                 <executions>
                     <execution>
                         <id>generate</id>
@@ -110,6 +151,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -117,6 +159,26 @@
                 <executions>
                     <execution>
                         <phase>initialize</phase>
+                        <id>camel-comp-clean</id>
+                        <goals>
+                            <goal>add-source</goal>
+                            <goal>add-resource</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/generated/java</source>
+                            </sources>
+                            <resources>
+                                <resource>
+                                    <directory>src/generated/resources</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <id>camel-comp-generate</id>
                         <goals>
                             <goal>add-source</goal>
                             <goal>add-resource</goal>

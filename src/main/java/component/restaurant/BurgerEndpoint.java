@@ -11,7 +11,10 @@ import org.apache.camel.spi.UriPath;
 import org.apache.camel.support.DefaultEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import burger.Ingredients;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -20,23 +23,21 @@ import java.util.concurrent.ExecutorService;
  * TODO: Update one line description above what the component does, and update Category.
  */
 @UriEndpoint(firstVersion = "1.0-SNAPSHOT", scheme = "burger", title = "Burger", syntax = "burger:restaurant:name",
-        consumerOnly = true, category = {Category.DATABASE})
+        consumerOnly = true, category = {Category.SOCIAL})
 public class BurgerEndpoint extends DefaultEndpoint {
-    @UriPath
+    private final Logger LOGGER = LoggerFactory.getLogger(BurgerEndpoint.class);
+    @UriPath(label = "common")
     @Metadata(required = true)
     private String name;
-    @UriParam(defaultValue = "42")
-    private int order;
+    @UriParam(label = "common", defaultValue = "42")
+    private int amount = 42;
 
-    private final Logger LOGGER = LoggerFactory.getLogger(BurgerEndpoint.class);
-
-    public BurgerEndpoint() {
-    }
-
-    public BurgerEndpoint(String uri, BurgerComponent component) {
+    public BurgerEndpoint(String uri, BurgerComponent component, String name) {
         super(uri, component);
-        LOGGER.info("BurgerEndpoint created");
+        this.name = name;
+        LOGGER.info("BurgerEndpoint initialized");
     }
+
 
     @Override
     public Producer createProducer() throws Exception {
@@ -47,6 +48,7 @@ public class BurgerEndpoint extends DefaultEndpoint {
     public Consumer createConsumer(Processor processor) throws Exception {
         Consumer consumer = new BurgerConsumer(this, processor);
         configureConsumer(consumer);
+        LOGGER.info("BurgerEndpoint created consumer");
         return consumer;
     }
 
@@ -64,13 +66,14 @@ public class BurgerEndpoint extends DefaultEndpoint {
     /**
      * Some description of this option, and what it does
      */
-    public void setOrder(int order) {
-        this.order = order;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
-    public int getOrder() {
-        return order;
+    public int getAmount() {
+        return amount;
     }
+
 
     public ExecutorService createExecutor() {
         // TODO: Delete me when you implemented your custom component

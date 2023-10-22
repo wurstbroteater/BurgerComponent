@@ -1,5 +1,6 @@
 package org.example;
 
+import bean.ReceiverService;
 import burger.Ingredients;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
@@ -32,6 +33,7 @@ public class ComponentCommunicationTest extends CamelTestSupport {
                 System.out.println();
                 //from restaurant to location
                 from("burger://restaurant:burgerme?amount=4")
+                        .bean(ReceiverService.class)
                         .to("location:home")
                         .to("log:out")
                         .to("mock:result");

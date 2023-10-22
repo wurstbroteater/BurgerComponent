@@ -15,9 +15,9 @@ public class LocationProducer extends DefaultProducer {
         this.endpoint = endpoint;
     }
 
+    @Override
     public void process(Exchange exchange) throws Exception {
-        final Burger receivedFood = (Burger) exchange.getIn().getBody();
-        LOGGER.info("LOCATION Received message  " + receivedFood);
+        LOGGER.info("LOCATION Received message  " + exchange.getIn().getBody());
     }
 
 }

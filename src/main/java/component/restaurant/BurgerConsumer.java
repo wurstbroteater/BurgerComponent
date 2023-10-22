@@ -11,6 +11,7 @@ import org.example.EventBusHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -63,15 +64,13 @@ public class BurgerConsumer extends DefaultConsumer {
 
     private void onEventListener(final List<Ingredients> event) {
         final Exchange exchange = createExchange(false);
-        LOGGER.info("");
-        LOGGER.info("BURGER creating message");
-        /*
-        LOGGER.info("Restaurant " + endpoint.getName() + "\nCreated " + (++counter) + " Burger!\n" +
-                "Parameter amount: " + endpoint.getAmount() +
-                "\nEvent: " + event);
-
-         */
-        exchange.getIn().setBody(cook.makeFood(event));
+        LOGGER.info("Received new published ingredients list!");
+        final List<Burger> foodDelivery = new ArrayList<>();
+        for (int i = 1; i <= endpoint.getAmount(); i++) {
+            foodDelivery.add(cook.makeFood(event));
+        }
+        exchange.getIn().setBody(foodDelivery);
+        LOGGER.info("Restaurant %s processed its %d order and created %d %s".formatted(endpoint.getName(), ++counter, endpoint.getAmount(), cook.getRecipes().get(event)));
         try {
             // send message to next processor in the route
             getProcessor().process(exchange);

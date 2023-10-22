@@ -11,11 +11,11 @@ import java.util.Map;
 public class Cook {
     private static final Logger LOGGER = LoggerFactory.getLogger(Cook.class);
     private final String name;
-    private final Map<List<Ingredients>, String> knowledge;
+    private final Map<List<Ingredients>, String> recipes;
 
-    public Cook(String name, Map<List<Ingredients>, String> knowledge) {
+    public Cook(String name, Map<List<Ingredients>, String> recipes) {
         this.name = name;
-        this.knowledge = knowledge;
+        this.recipes = recipes;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class Cook {
     }
 
     public Burger makeFood(List<Ingredients> ingredients) {
-        final String type = knowledge.get(ingredients);
+        final String type = recipes.get(ingredients);
         if (type == null) {
             LOGGER.warn(this + " can't process ingredients: " + ingredients);
             return null;
@@ -34,5 +34,7 @@ public class Cook {
         return food;
     }
 
-
+    public Map<List<Ingredients>, String> getRecipes() {
+        return recipes;
+    }
 }
